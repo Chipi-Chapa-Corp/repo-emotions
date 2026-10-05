@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace RepoEmoteWheel;
 
-[BepInPlugin(Id, "MMB Emote Wheel", "1.3.1")]
+[BepInPlugin(Id, "MMB Emote Wheel", "1.3.5")]
 public sealed class Plugin : BaseUnityPlugin
 {
     public const string Id = "local.repo.mmbemotewheel";

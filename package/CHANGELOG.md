@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.3.5
+
+- Straightened the pointing arm by aiming toward the center farther ahead.
+- Swept its supporting arm farther backward while keeping the 100-degree lift.
+
+## 1.3.4
+
+- Hands-to-mouth moves both shoulders forward to clear the chest while keeping the hands at the mouth.
+- Pointing keeps the left shoulder in its natural position and angles the arm toward the center ahead. The supporting arm stays back but lowers to 100 degrees from down.
+
+## 1.3.3
+
+- Sad angles the fists outward and slightly forward to clear bulky clothing.
+- Pointing moves the left shoulder only halfway toward the front center; the right shoulder moves back and its arm uses the Angry pose.
+- Angry now raises both arms 130 degrees from straight down, retaining the backward sweep.
+
+## 1.3.2
+
+- Sad now rounds both shoulders visibly forward and slightly inward, with arms hanging down.
+- Pointing moves the left shoulder to the front center of the chest, so the arm points straight ahead from the middle.
+
 ## 1.3.1
 
 - Fixed arm blending: native expression weights are relative, so held poses now reach their intended angles.

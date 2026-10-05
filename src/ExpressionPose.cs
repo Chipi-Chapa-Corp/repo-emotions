@@ -87,9 +87,7 @@ public sealed class ExpressionPose : MonoBehaviour
         float accumulated = weights[0];
         float reach = weights[0];
         Vector3 naturalScale = arm.localScale;
-        // Move the shoulder before solving the hand, rather than shifting the
-        // already-posed arm away from its target afterward.
-        arm.position += visuals.transform.TransformVector(Vector3.forward * (.08f * weights[2]));
+        MoveShoulder(arm, side);
         Vector3 sideways = arm.TransformVector(new Vector3(palm.x, palm.y, 0));
         Vector3 forward = arm.TransformVector(new Vector3(0, 0, palm.z));
         for (int i = 1; i <= WheelState.Count && i < expression.expressions.Count; i++)
@@ -113,19 +111,34 @@ public sealed class ExpressionPose : MonoBehaviour
         arm.localScale = new Vector3(naturalScale.x, naturalScale.y, naturalScale.z * reach);
     }
 
+    private void MoveShoulder(Transform arm, int side)
+    {
+        // Work in the animated torso's space so the shoulder placement follows
+        // body sway. The saved local position is restored before the next Update.
+        Transform torso = visuals.bodyTopSideTransform ? visuals.bodyTopSideTransform : visuals.transform;
+        Vector3 natural = torso.InverseTransformPoint(arm.position);
+        // Round both shoulders forward and slightly inward. The previous .08
+        // forward-only offset was barely visible from the front.
+        Vector3 sadOffset = new Vector3(-natural.x * .30f, 0, .20f);
+        Vector3 position = natural + sadOffset * weights[2];
+        // Bring the mouth-covering arms clear of the chest before solving contact.
+        position += Vector3.forward * (.18f * weights[6]);
+        // Pointing keeps the left shoulder in place; the supporting arm stays back.
+        if (side > 0) position += Vector3.back * (.15f * weights[3]);
+        arm.position = torso.TransformPoint(position);
+    }
+
     private Vector3 Direction(int index, Transform arm, int side)
     {
         Transform frame = visuals.transform;
         switch (index)
         {
-            case 1: // Angry: lift 80 degrees from hanging, sweep 10 degrees back.
-                float up = 80f * Mathf.Deg2Rad, back = 10f * Mathf.Deg2Rad;
-                return frame.TransformDirection(new Vector3(side * Mathf.Sin(up) * Mathf.Cos(back),
-                    -Mathf.Cos(up), -Mathf.Sin(up) * Mathf.Sin(back)));
-            case 2: // Sad: slack arms and shoulders slightly forward.
-                return frame.TransformDirection(Vector3.down);
-            case 3: // Narrow, suspicious eyes: left hand points forward.
-                return side < 0 ? frame.forward : Vector3.zero;
+            case 1:
+                return RaisedArmDirection(side, 130f);
+            case 2: // Sad: hang down, with fists clear of bulky clothing.
+                return frame.TransformDirection(new Vector3(side * .35f, -1f, .20f));
+            case 3: // Aim inward from the natural shoulder toward the center ahead.
+                return side < 0 ? PointingDirection(arm) : RaisedArmDirection(side, 100f, 30f);
             case 4: // Closed eyes: hands resting behind the back.
                 return frame.TransformDirection(new Vector3(-side * .25f, -.35f, -1f));
             case 5: // Wide shocked eyes: hands at the sides of the head.
@@ -135,6 +148,23 @@ public sealed class ExpressionPose : MonoBehaviour
             default:
                 return Vector3.zero;
         }
+    }
+
+    private Vector3 PointingDirection(Transform arm)
+    {
+        Transform torso = visuals.bodyTopSideTransform ? visuals.bodyTopSideTransform : visuals.transform;
+        Vector3 shoulder = torso.InverseTransformPoint(arm.position);
+        // Converge farther ahead so the arm reads as pointing toward the viewer,
+        // rather than across the body.
+        Vector3 target = new Vector3(0, shoulder.y, 1.5f);
+        return torso.TransformPoint(target) - arm.position;
+    }
+
+    private Vector3 RaisedArmDirection(int side, float degreesFromDown, float degreesBack = 10f)
+    {
+        float up = degreesFromDown * Mathf.Deg2Rad, back = degreesBack * Mathf.Deg2Rad;
+        return visuals.transform.TransformDirection(new Vector3(side * Mathf.Sin(up) * Mathf.Cos(back),
+            -Mathf.Cos(up), -Mathf.Sin(up) * Mathf.Sin(back)));
     }
 
     private Vector3 HeadTarget(float x, float y, float z, bool top)

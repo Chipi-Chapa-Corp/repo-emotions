@@ -74,3 +74,31 @@ Interactive checklist:
 - Release build: zero warnings/errors. All 45 checks passed, including the native weight recurrence at 30/60/144 FPS, neutral/multiple-expression blends, and contact reach for both measured socket offsets at three distances.
 - Validated 1.3.1 ZIP and installed through Gale while the game was closed; installed DLL matches release hash. Visual contact/framing and multiplayer still require interactive verification.
 - Live 1.3.1 startup and in-level log verified: wheel selections for sad, full-open shocked, angry and half-open shocked, plus repeated self-view holds; no plugin exceptions. Passive screenshots confirmed self-view renders the avatar, but did not capture sustained contact poses, so those are not marked visually passed.
+
+## 1.3.2 shoulder placement
+
+- User accepted the 1.3.1 poses except Sad's subtle shoulder movement and the pointing arm's side origin.
+- Sad now moves both shoulder pivots 0.20 units forward in animated torso space, drawing them 30% inward for visible rounded shoulders. The arms still hang straight down.
+- Pointing moves only the left shoulder to the torso centerline (x = 0) and front (z = 0.30), preserving shoulder height and the forward arm direction. Normalized expression weights blend these translations; existing restoration removes them before native animation and on teardown.
+- Release build: zero warnings/errors; all 45 existing behavior/pose-math checks passed. Package validation and whitespace check passed.
+- Installed 1.3.2 through Gale with the game closed; installed DLL hash matches the release. These two visual adjustments await in-game confirmation.
+
+## 1.3.3 pose tuning
+
+- Sad keeps the forward, rounded shoulders and angles the hanging arms outward/slightly forward to give fists more clearance from 3D clothing.
+- Pointing now moves the left shoulder halfway from its natural position toward the 1.3.2 front-center target. The right shoulder moves 0.15 torso-local units backward; its arm shares the Angry direction.
+- Angry raises arms 130 degrees from straight down with the existing 10-degree backward sweep. The shared direction keeps the pointing pose's second arm consistent.
+- Build: zero warnings/errors. All 45 existing checks pass; ZIP validation and whitespace check pass. Installed 1.3.3 through Gale while the game was closed; installed and release DLL hashes match. Clothing clearance and these revised poses await interactive confirmation.
+
+## 1.3.4 mouth clearance and pointing direction
+
+- Mouth-covering pose advances both shoulder pivots 0.18 units in animated torso space before the existing palm contact solve; mouth targets remain anchored to the jaw.
+- Interpreted the user's second adjustment as the pointing pose: restore the left shoulder's natural position and aim the arm toward a centerline point 0.75 torso-local units ahead, at shoulder height. This produces a visible inward angle rather than translating the shoulder to the center.
+- Pointing's supporting right shoulder keeps its 0.15-unit backward offset; its arm is raised 100 degrees from down. Angry keeps 130 degrees.
+- Release build: zero warnings/errors; all 45 existing checks, package validation, and whitespace check pass. Installed 1.3.4 through Gale with the game closed; installed DLL hash matches release. Revised visual clearance/direction await user confirmation.
+
+## 1.3.5 pointing refinement
+
+- Pointing now converges on the torso centerline 1.5 local units ahead (previously 0.75), reducing the inward angle from roughly 19 to 10 degrees on the stock rig.
+- Its supporting arm retains the 100-degree lift and backward shoulder offset, but increases the backward sweep from 10 to 30 degrees. The separate Angry pose remains at 130 degrees/10-degree sweep.
+- Build: zero warnings/errors; all 45 existing checks, ZIP validation and whitespace check pass. Installed through Gale with the game closed; installed and release DLL hashes match. Latest visual refinement awaits in-game confirmation.
