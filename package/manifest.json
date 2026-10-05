@@ -1,0 +1,7 @@
+{
+  "name": "MMB_Emote_Wheel",
+  "version_number": "1.1.1",
+  "website_url": "",
+  "description": "Hold middle mouse to choose a native R.E.P.O. expression from an eye-icon wheel. Release to emote for five seconds. Subdued UI, no extra HUD or timer.",
+  "dependencies": ["BepInEx-BepInExPack-5.4.2305"]
+}

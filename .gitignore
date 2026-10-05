@@ -1,0 +1,32 @@
+# Downloaded SDK, loader, and development tools
+/.tools/
+
+# Build outputs and release packages
+**/bin/
+**/obj/
+/dist/
+/artifacts/
+
+# Editor and local user settings
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Temporary files and OS metadata
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini

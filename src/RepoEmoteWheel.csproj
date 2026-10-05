@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RepoEmoteWheel</AssemblyName>
+    <Version>1.1.1</Version>
+    <GameDir Condition="'$(GameDir)' == ''">$(HOME)/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/REPO</GameDir>
+    <BepInExDir Condition="'$(BepInExDir)' == ''">$(MSBuildThisFileDirectory)../.tools/bepinex/BepInEx</BepInExDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameDir)/REPO_Data/Managed/Unity*.dll" Private="false" />
+    <Reference Include="$(GameDir)/REPO_Data/Managed/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="$(GameDir)/REPO_Data/Managed/PhotonUnityNetworking.dll" Private="false" />
+    <Reference Include="$(BepInExDir)/core/BepInEx.dll" Private="false" />
+    <Reference Include="$(BepInExDir)/core/0Harmony.dll" Private="false" />
+  </ItemGroup>
+</Project>
