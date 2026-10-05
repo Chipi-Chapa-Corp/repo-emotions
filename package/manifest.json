@@ -1,8 +1,8 @@
 {
-  "name": "MMB_Emote_Wheel",
-  "version_number": "1.3.5",
+  "name": "Refined_Emotions",
+  "version_number": "1.3.6",
   "website_url": "",
-  "description": "Hold MMB to choose native expressions with matching arm poses. Hold V for a front-facing self-view. Configurable bindings, eye previews and five-second emotes.",
+  "description": "Emotion wheel with refined expressions",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2305",
     "nickklmao-REPOConfig-1.2.6"

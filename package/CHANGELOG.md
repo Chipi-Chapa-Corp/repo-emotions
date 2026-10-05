@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.6
+
+- Renamed MMB Emote Wheel to Refined Emotions. Existing bindings and configuration are preserved.
+
 ## 1.3.5
 
 - Straightened the pointing arm by aiming toward the center farther ahead.

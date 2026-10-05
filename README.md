@@ -1,30 +1,27 @@
 <p align="center">
-  <img src="docs/preview.png" alt="R.E.P.O. emote wheel with six eye previews" width="720">
+  <img src="./docs/preview.png" alt="R.E.P.O. emote wheel with six eye previews" width="720">
 </p>
 
-<h1 align="center">MMB Emote Wheel</h1>
+<h1 align="center">Refined Emotions</h1>
 
-Hold **middle mouse**, point at an expression, and release to play it for **5 seconds**. Release in the center or press **Escape** to cancel.
+<p align="center"><i><b>Express</i></b> yourself to your mates in R.E.P.O</p>
 
-Six native expressions with matching arm poses, eye previews, and a subdued UI. Uses the game's existing expression display.
+## Usage
+Hold `Middle Mouse Button` (scroll wheel) to choose an emote.  
+Hold `V` to see yourself.  
+Configure keys via `Menu` > `Mods` > `Refined Emotions`
 
 ## Install
 
-Requires **BepInEx 5** and **REPOConfig** (with MenuLib). Copy `RepoEmoteWheel.dll` into `BepInEx/plugins/RepoEmoteWheel/`.
-
-Set `Type = MonoBehaviour` under `[Preloader.Entrypoint]` in `BepInEx/config/BepInEx.cfg`, then restart. See [installation and configuration](package/README.md) for mod managers and Proton.
-
-Hold **V** for a front-facing self-view while emoting. Release to return to first person. Change **Button** (`Mouse2`) and **Self-view** (`V`) in **Mods → MMB Emote Wheel**.
+<!-- TODO: Add the Thunderstore download button after publishing. -->
 
 ## Build
 
 ```bash
-./scripts/bootstrap.sh
-./scripts/build.sh       # DLL
-./scripts/test.sh
-python3 scripts/package.py  # Build + Thunderstore ZIP
+./scripts/bootstrap.sh # Download the local .NET SDK and BepInEx build dependencies
+./scripts/test.sh      # Run automated checks
+
+./scripts/build.sh     # Build dist/RepoEmoteWheel.dll
+# Or build the DLL and a ready-to-upload Thunderstore ZIP in dist/:
+python3 scripts/package.py
 ```
-
-Outputs go to `dist/`. Builds against your installed game; set `GameDir=/path/to/REPO` if needed.
-
-Tested with **R.E.P.O. 0.4.4.3** on Linux/Proton. [Changelog](package/CHANGELOG.md).

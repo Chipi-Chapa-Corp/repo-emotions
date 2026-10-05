@@ -23,7 +23,7 @@ internal sealed class WheelView : IDisposable
 
     internal WheelView()
     {
-        root = new GameObject("MMB Emote Wheel UI", typeof(RectTransform), typeof(Canvas), typeof(CanvasGroup));
+        root = new GameObject("Refined Emotions UI", typeof(RectTransform), typeof(Canvas), typeof(CanvasGroup));
         UnityEngine.Object.DontDestroyOnLoad(root);
         canvas = root.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;

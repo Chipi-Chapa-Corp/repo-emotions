@@ -51,7 +51,7 @@ target=install_dir/'BepInEx/plugins/RepoEmoteWheel'
 if a.profile_dir:
     # Preserve r2modman's managed location when updating a locally imported mod.
     for metadata in (install_dir/'BepInEx/plugins').glob('*/mm_v2_manifest.json'):
-        if json.loads(metadata.read_text()).get('displayName') == 'MMB_Emote_Wheel':
+        if json.loads(metadata.read_text()).get('displayName') in ('Refined_Emotions', 'MMB_Emote_Wheel'):
             copies=list(metadata.parent.rglob('RepoEmoteWheel.dll'))
             if len(copies)!=1: raise SystemExit('Expected one managed RepoEmoteWheel.dll; check the profile')
             target=copies[0].parent

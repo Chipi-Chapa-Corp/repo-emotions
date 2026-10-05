@@ -7,9 +7,10 @@ using UnityEngine.InputSystem;
 
 namespace RepoEmoteWheel;
 
-[BepInPlugin(Id, "MMB Emote Wheel", "1.3.5")]
+[BepInPlugin(Id, "Refined Emotions", "1.3.6")]
 public sealed class Plugin : BaseUnityPlugin
 {
+    // Keep the original plugin ID so existing bindings/configuration survive the rename.
     public const string Id = "local.repo.mmbemotewheel";
     internal static Plugin Instance;
     internal readonly WheelState State = new WheelState();
@@ -50,7 +51,7 @@ public sealed class Plugin : BaseUnityPlugin
         selfView = gameObject.AddComponent<SelfView>();
         harmony = new Harmony(Id);
         harmony.PatchAll(typeof(Plugin));
-        Logger.LogInfo("MMB Emote Wheel ready: hold " + buttonCode + ", point, release. Duration: " + Duration + "s.");
+        Logger.LogInfo("Refined Emotions ready: hold " + buttonCode + ", point, release. Duration: " + Duration + "s.");
     }
 
     private void ReadButton()

@@ -102,3 +102,10 @@ Interactive checklist:
 - Pointing now converges on the torso centerline 1.5 local units ahead (previously 0.75), reducing the inward angle from roughly 19 to 10 degrees on the stock rig.
 - Its supporting arm retains the 100-degree lift and backward shoulder offset, but increases the backward sweep from 10 to 30 degrees. The separate Angry pose remains at 130 degrees/10-degree sweep.
 - Build: zero warnings/errors; all 45 existing checks, ZIP validation and whitespace check pass. Installed through Gale with the game closed; installed and release DLL hashes match. Latest visual refinement awaits in-game confirmation.
+
+## 1.3.6 Refined Emotions rename
+
+- Renamed the BepInEx display name, startup log/UI object name, README headings/settings paths, and Thunderstore package to Refined Emotions / Refined_Emotions. Kept the plugin GUID and DLL identity for configuration and manual-upgrade compatibility.
+- Build succeeded with zero warnings/errors; renamed ZIP passed package validation; installer syntax and whitespace checks passed. No gameplay changes.
+- Renamed the existing Gale profile and local package entry while Gale/the game were closed, with database, package and configuration backups under `.tools/gale-rename-backup`. Imported the new ZIP through Gale; verified one plugin DLL, exact release bytes, unchanged config bytes and all original dependencies retained.
+- Launched the renamed Gale profile successfully. Live log confirms `Loading [Refined Emotions 1.3.6]`, normal input Update and all four patches registered.

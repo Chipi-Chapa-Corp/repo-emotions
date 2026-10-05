@@ -1,4 +1,4 @@
-# MMB Emote Wheel
+# Refined Emotions
 
 Hold **middle mouse** to open an eye-icon wheel for R.E.P.O.'s six built-in expressions. Point toward an expression and release to play it for five seconds.
 
@@ -36,7 +36,7 @@ Install [BepInEx 5](https://thunderstore.io/c/repo/p/BepInEx/BepInExPack/) and [
 REPO/BepInEx/plugins/RepoEmoteWheel/RepoEmoteWheel.dll
 ```
 
-Apply the loader startup setting above. If migrating from a previous manual/mod-manager install, keep only one copy of the plugin.
+Apply the loader startup setting above. If upgrading from MMB Emote Wheel, remove its old mod-manager entry before installing; keep your config. Keep only one copy of the plugin.
 
 ### Linux / Steam Deck
 
@@ -50,7 +50,7 @@ Preserve any existing launch options or overrides; a mod manager may already con
 
 ## Configuration
 
-Open **Mods → MMB Emote Wheel → Emote wheel** in REPOConfig.
+Open **Mods → Refined Emotions → Emote wheel** in REPOConfig.
 
 - **Button**: hold to open the wheel, default **Mouse2** (middle mouse).
 - **Self-view**: hold for a front-facing third-person view, default **V**.
@@ -73,7 +73,7 @@ Arm poses follow the game's native expression synchronization, including number-
 
 ## Troubleshooting
 
-Check `BepInEx/LogOutput.log`. A working launch logs `Wheel Update running; mouse=Mouse` and the installed patches. If it only logs `MMB Emote Wheel ready`, check the startup setting above.
+Check `BepInEx/LogOutput.log`. A working launch logs `Wheel Update running; mouse=Mouse` and the installed patches. If it only logs `Refined Emotions ready`, check the startup setting above.
 
 The wheel and self-view are available during active play. They cancel in menus, chat, loading, after death, or when the window loses focus. Release and press the binding again to resume. Self-view yields to native special camera modes.
 
