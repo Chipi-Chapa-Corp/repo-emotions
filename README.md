@@ -9,11 +9,15 @@
 ## Usage
 Hold `Middle Mouse Button` (scroll wheel) to choose an emote.  
 Hold `V` to see yourself.  
-Configure keys via `Menu` > `Mods` > `Refined Emotions`
+Optional: change keys via `Menu` > `Mods` > `Refined Emotions`.
 
 ## Install
 
-<!-- TODO: Add the Thunderstore download button after publishing. -->
+[![Install from Thunderstore](https://img.shields.io/badge/Install_from-Thunderstore-00B4E6?style=for-the-badge)](https://thunderstore.io/c/repo/p/ChipiChapaCorp/Refined_Emotions/)
+
+Click **Install with Mod Manager**, then **Launch modded** from that profile. Dependencies install automatically. The mod supplies its default controls on first launch; no config edits or previous setup are needed.
+
+Everyone who wants to see the added arm poses needs the mod.
 
 ## Build
 

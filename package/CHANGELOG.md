@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.7
+
+- Fix startup for installations using default loader settings.
+- No configuration edits or previous setup required. Existing key bindings are preserved.
+- Simplify installation instructions to install through a mod manager and launch modded.
+
 ## 1.3.6
 
 - Renamed MMB Emote Wheel to Refined Emotions. Existing bindings and configuration are preserved.
@@ -57,7 +63,7 @@
 ## 1.0.1
 
 - Added startup and input diagnostics.
-- Fixed the local loader configuration so Unity executes the plugin callbacks.
+- Added a local startup workaround, superseded by the 1.3.7 startup change.
 
 ## 1.0.0
 

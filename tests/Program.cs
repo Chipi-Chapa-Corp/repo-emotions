@@ -66,4 +66,5 @@ foreach (float lateral in new[] { .04f, 0f }) {
             "palm reaches contact at " + targetLength + " with socket offset " + lateral);
     }
 }
+RuntimeLifecycle.Check(Check);
 Console.WriteLine($"{passed} checks passed.");

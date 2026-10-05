@@ -3,4 +3,5 @@
   <ItemGroup><Compile Include="../src/WheelState.cs" Link="WheelState.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../src/HoldState.cs" Link="HoldState.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../src/PoseWeights.cs" Link="PoseWeights.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../src/RuntimeHost.cs" Link="RuntimeHost.cs" /></ItemGroup>
 </Project>

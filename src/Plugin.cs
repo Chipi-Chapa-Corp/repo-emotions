@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace RepoEmoteWheel;
 
-[BepInPlugin(Id, "Refined Emotions", "1.3.6")]
+[BepInPlugin(Id, "Refined Emotions", "1.3.7")]
 public sealed class Plugin : BaseUnityPlugin
 {
     // Keep the original plugin ID so existing bindings/configuration survive the rename.
@@ -19,7 +19,8 @@ public sealed class Plugin : BaseUnityPlugin
     private KeyCode buttonCode = KeyCode.Mouse2;
     private ConfigEntry<string> selfViewButton;
     private KeyCode selfViewCode = KeyCode.V;
-    private SelfView selfView;
+    private RuntimeHost runtime;
+    private SelfView selfView => runtime?.SelfView;
     private Harmony harmony;
     private Vector2 pointer;
     private bool heldLast;
@@ -48,10 +49,11 @@ public sealed class Plugin : BaseUnityPlugin
                 new AcceptableValueList<string>(WheelBinding.Buttons)));
         ReadSelfViewButton();
         selfViewButton.SettingChanged += SelfViewButtonChanged;
-        selfView = gameObject.AddComponent<SelfView>();
         harmony = new Harmony(Id);
         harmony.PatchAll(typeof(Plugin));
-        Logger.LogInfo("Refined Emotions ready: hold " + buttonCode + ", point, release. Duration: " + Duration + "s.");
+        runtime = new RuntimeHost(this);
+        Logger.LogInfo("Refined Emotions initialized; waiting for scene runtime. Hold " + buttonCode +
+            ", point, release. Duration: " + Duration + "s.");
     }
 
     private void ReadButton()
@@ -113,7 +115,7 @@ public sealed class Plugin : BaseUnityPlugin
     internal bool BlockLook => State.IsOpen || closedFrame == Time.frameCount ||
         (selfView && selfView.Active) || (Held && Allowed());
 
-    private void Update()
+    internal void Tick()
     {
         if (!updateReported)
         {
@@ -158,7 +160,7 @@ public sealed class Plugin : BaseUnityPlugin
         }
     }
 
-    private void LateUpdate()
+    internal void Render()
     {
         if (view == null && State.IsOpen) view = new WheelView();
         view?.Render(State, pointer, Scale, Allowed());
@@ -194,16 +196,16 @@ public sealed class Plugin : BaseUnityPlugin
         if (__instance.expressions.Count > index) __instance.OverrideExpressionSet(index, 100f);
     }
 
-    private void OnApplicationFocus(bool focused)
+    internal void CancelWheel()
     {
-        if (!focused) State.Tick(Time.unscaledTime, false, Held, false, 0, 0, 55, Duration);
+        State.Tick(Time.unscaledTime, false, Held, false, 0, 0, 55, Duration);
     }
 
     private void OnDestroy()
     {
         if (button != null) button.SettingChanged -= ButtonChanged;
         if (selfViewButton != null) selfViewButton.SettingChanged -= SelfViewButtonChanged;
-        if (selfView) { selfView.Cancel(); Destroy(selfView); }
+        runtime?.Dispose();
         foreach (var pose in FindObjectsOfType<ExpressionPose>()) Destroy(pose);
         harmony?.UnpatchSelf();
         view?.Dispose();
