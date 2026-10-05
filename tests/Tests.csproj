@@ -1,4 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup>
   <ItemGroup><Compile Include="../src/WheelState.cs" Link="WheelState.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../src/HoldState.cs" Link="HoldState.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../src/PoseWeights.cs" Link="PoseWeights.cs" /></ItemGroup>
 </Project>

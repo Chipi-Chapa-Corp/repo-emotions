@@ -2,16 +2,18 @@
 
 Hold **middle mouse** to open an eye-icon wheel for R.E.P.O.'s six built-in expressions. Point toward an expression and release to play it for five seconds.
 
-- Six eye previews drawn from the game's expression settings.
+- Six eye previews with matching arm poses: angry, sad, pointing, hands behind the back, hands on the head and hands at the mouth.
 - Subdued radial UI, warm yellow selection and gentle hover animation.
 - Release in the center or press Escape to cancel.
 - Camera aiming pauses while the wheel is open.
 - Uses the game's existing expression display. No duplicate preview or countdown.
-- Original number-key controls continue to work.
+- Hold V to see yourself from the front, including while using the wheel. Release to return to first person.
+- Original number-key controls get the same poses.
+- Arm poses yield to grabbing, map use, crawling and tumbling.
 
 ## Installation
 
-Install with a Thunderstore-compatible mod manager; BepInEx is listed as a dependency. Launch the game through the same mod-manager profile.
+Install with a Thunderstore-compatible mod manager; BepInEx and REPOConfig are dependencies; REPOConfig installs MenuLib. Launch the game through the same mod-manager profile.
 
 **Loader startup setting:** with the game closed, check the profile's `BepInEx/config/BepInEx.cfg` and use:
 
@@ -28,7 +30,7 @@ If the file does not exist yet, launch and quit the modded game once. After chan
 
 ### Manual installation
 
-Install [BepInEx 5](https://thunderstore.io/c/repo/p/BepInEx/BepInExPack/) first. Copy the ZIP's `BepInEx` folder into the game directory, merging folders, so the plugin is at:
+Install [BepInEx 5](https://thunderstore.io/c/repo/p/BepInEx/BepInExPack/) and [REPOConfig](https://thunderstore.io/c/repo/p/nickklmao/REPOConfig/) with its MenuLib dependency first. Copy the ZIP's `BepInEx` folder into the game directory, merging folders, so the plugin is at:
 
 ```text
 REPO/BepInEx/plugins/RepoEmoteWheel/RepoEmoteWheel.dll
@@ -48,26 +50,32 @@ Preserve any existing launch options or overrides; a mod manager may already con
 
 ## Configuration
 
-After first launch, duration can be changed in `BepInEx/config/local.repo.mmbemotewheel.cfg`:
+Open **Mods → MMB Emote Wheel → Emote wheel** in REPOConfig.
+
+- **Button**: hold to open the wheel, default **Mouse2** (middle mouse).
+- **Self-view**: hold for a front-facing third-person view, default **V**.
+
+Changes apply immediately. Release Self-view to restore first person. Mouse-look pauses while viewing yourself. Escape remains the wheel cancel key. Emotes last five seconds.
+
+You can also edit `BepInEx/config/local.repo.mmbemotewheel.cfg` with the game closed:
 
 ```ini
-[General]
-DurationSeconds = 5
+[Emote wheel]
+Button = Mouse2
+Self-view = V
 ```
-
-Supported values: 0.5 to 30 seconds. Restart after editing. The duration is not displayed on screen.
 
 ## Compatibility
 
-Built and tested against R.E.P.O. **0.4.4.3** on Linux/Proton with BepInEx 5.4.23.2. The manifest requests the current Thunderstore BepInEx pack, 5.4.2305; that exact mod-manager installation and Windows have not been tested yet.
+Built and tested against R.E.P.O. **0.4.4.3** on Linux/Proton with BepInEx 5.4.23.2. Also verified loading through Gale with BepInExPack 5.4.2305, REPOConfig 1.2.6 and MenuLib 2.5.2. Windows has not been tested.
 
-This is a local input/UI mod using the game's native expression synchronization. A second-player multiplayer reception test is still pending. Cosmetics and rewards are not modified.
+Arm poses follow the game's native expression synchronization, including number-key expressions. Other players need this mod to see the added poses; players without it still see the native eye expressions. Multiplayer pose reception has not yet been tested. Cosmetics and rewards are not modified.
 
 ## Troubleshooting
 
-Check `BepInEx/LogOutput.log`. A working launch logs `Wheel Update running; mouse=Mouse` and the three installed patches. If it only logs `MMB Emote Wheel ready`, check the startup setting above.
+Check `BepInEx/LogOutput.log`. A working launch logs `Wheel Update running; mouse=Mouse` and the installed patches. If it only logs `MMB Emote Wheel ready`, check the startup setting above.
 
-The wheel is available during active play. It closes in menus, chat, loading, after death, or when the window loses focus.
+The wheel and self-view are available during active play. They cancel in menus, chat, loading, after death, or when the window loses focus. Release and press the binding again to resume. Self-view yields to native special camera modes.
 
 ## Uninstall
 

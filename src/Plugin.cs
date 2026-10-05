@@ -7,13 +7,18 @@ using UnityEngine.InputSystem;
 
 namespace RepoEmoteWheel;
 
-[BepInPlugin(Id, "MMB Emote Wheel", "1.1.1")]
+[BepInPlugin(Id, "MMB Emote Wheel", "1.3.1")]
 public sealed class Plugin : BaseUnityPlugin
 {
     public const string Id = "local.repo.mmbemotewheel";
     internal static Plugin Instance;
     internal readonly WheelState State = new WheelState();
-    private ConfigEntry<float> duration;
+    internal const float Duration = 5f;
+    private ConfigEntry<string> button;
+    private KeyCode buttonCode = KeyCode.Mouse2;
+    private ConfigEntry<string> selfViewButton;
+    private KeyCode selfViewCode = KeyCode.V;
+    private SelfView selfView;
     private Harmony harmony;
     private Vector2 pointer;
     private bool heldLast;
@@ -32,11 +37,56 @@ public sealed class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Instance = this;
-        duration = Config.Bind("General", "DurationSeconds", 5f,
-            new ConfigDescription("How long the selected expression plays.", new AcceptableValueRange<float>(0.5f, 30f)));
+        button = Config.Bind("Emote wheel", "Button", "Mouse2",
+            new ConfigDescription("Hold to open the wheel, release to emote. Mouse2 is middle mouse.",
+                new AcceptableValueList<string>(WheelBinding.Buttons)));
+        ReadButton();
+        button.SettingChanged += ButtonChanged;
+        selfViewButton = Config.Bind("Emote wheel", "Self-view", "V",
+            new ConfigDescription("Hold to look at yourself from the front. Release to return to first person.",
+                new AcceptableValueList<string>(WheelBinding.Buttons)));
+        ReadSelfViewButton();
+        selfViewButton.SettingChanged += SelfViewButtonChanged;
+        selfView = gameObject.AddComponent<SelfView>();
         harmony = new Harmony(Id);
         harmony.PatchAll(typeof(Plugin));
-        Logger.LogInfo("MMB Emote Wheel ready: hold middle mouse, point, release. Duration: " + duration.Value + "s.");
+        Logger.LogInfo("MMB Emote Wheel ready: hold " + buttonCode + ", point, release. Duration: " + Duration + "s.");
+    }
+
+    private void ReadButton()
+    {
+        if (!Enum.TryParse(button.Value, out buttonCode) || buttonCode == KeyCode.None)
+            buttonCode = KeyCode.Mouse2;
+    }
+
+    private void ReadSelfViewButton()
+    {
+        if (!Enum.TryParse(selfViewButton.Value, out selfViewCode) || selfViewCode == KeyCode.None)
+            selfViewCode = KeyCode.V;
+    }
+
+    private void SelfViewButtonChanged(object sender, EventArgs args)
+    {
+        ReadSelfViewButton();
+        selfView?.Cancel();
+    }
+
+    internal bool SelfViewHeld => Input.GetKey(selfViewCode);
+    internal void ReportSelfView(bool active) => Logger.LogInfo("Self-view " + (active ? "started" : "ended") + ".");
+
+    private void ButtonChanged(object sender, EventArgs args)
+    {
+        ReadButton();
+        heldLast = Held;
+        State.Tick(Time.unscaledTime, false, heldLast, false, 0, 0, 55, Duration);
+        closedFrame = Time.frameCount;
+    }
+
+    [HarmonyPatch(typeof(PlayerExpression), "Start"), HarmonyPostfix]
+    private static void AddPoses(PlayerExpression __instance)
+    {
+        if (!__instance.GetComponent<ExpressionPose>())
+            __instance.gameObject.AddComponent<ExpressionPose>();
     }
 
     internal bool Allowed() => BlockReason() == null;
@@ -58,8 +108,9 @@ public sealed class Plugin : BaseUnityPlugin
     }
 
     private float Scale => Mathf.Min(Screen.width / 1000f, Screen.height / 800f);
-    private bool Held => Mouse.current != null && Mouse.current.middleButton.isPressed;
-    internal bool BlockLook => State.IsOpen || closedFrame == Time.frameCount || (Held && Allowed());
+    private bool Held => Input.GetKey(buttonCode);
+    internal bool BlockLook => State.IsOpen || closedFrame == Time.frameCount ||
+        (selfView && selfView.Active) || (Held && Allowed());
 
     private void Update()
     {
@@ -80,7 +131,7 @@ public sealed class Plugin : BaseUnityPlugin
             }
         }
         bool held = Held;
-        if (held != heldLast) Logger.LogInfo("MMB " + (held ? "down" : "up") + "; " + (BlockReason() ?? "ready"));
+        if (held != heldLast) Logger.LogInfo(buttonCode + " " + (held ? "down" : "up") + "; " + (BlockReason() ?? "ready"));
         bool opening = held && !heldLast;
         if (opening) pointer = Vector2.zero;
         else if (State.IsOpen && Mouse.current != null)
@@ -92,14 +143,14 @@ public sealed class Plugin : BaseUnityPlugin
         bool cancel = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
         bool wasOpen = State.IsOpen;
         int previous = State.Active;
-        State.Tick(Time.unscaledTime, Allowed(), held, cancel, pointer.x, pointer.y, 55, duration.Value);
+        State.Tick(Time.unscaledTime, Allowed(), held, cancel, pointer.x, pointer.y, 55, Duration);
         heldLast = held;
         if (wasOpen && !State.IsOpen) closedFrame = Time.frameCount;
         if (previous != State.Active)
         {
             if (State.Active >= 0)
             {
-                Logger.LogInfo($"Expression {State.Active + 1} ({Name(State.Active)}) started; {duration.Value:0.0}s.");
+                Logger.LogInfo($"Expression {State.Active + 1} ({Name(State.Active)}) started; {Duration:0.0}s.");
                 if (PlayerExpressionsUI.instance) PlayerExpressionsUI.instance.ShrinkReset();
             }
             else Logger.LogInfo("Wheel expression ended.");
@@ -144,11 +195,15 @@ public sealed class Plugin : BaseUnityPlugin
 
     private void OnApplicationFocus(bool focused)
     {
-        if (!focused) State.Tick(Time.unscaledTime, false, Held, false, 0, 0, 55, duration.Value);
+        if (!focused) State.Tick(Time.unscaledTime, false, Held, false, 0, 0, 55, Duration);
     }
 
     private void OnDestroy()
     {
+        if (button != null) button.SettingChanged -= ButtonChanged;
+        if (selfViewButton != null) selfViewButton.SettingChanged -= SelfViewButtonChanged;
+        if (selfView) { selfView.Cancel(); Destroy(selfView); }
+        foreach (var pose in FindObjectsOfType<ExpressionPose>()) Destroy(pose);
         harmony?.UnpatchSelf();
         view?.Dispose();
         if (Instance == this) Instance = null;
